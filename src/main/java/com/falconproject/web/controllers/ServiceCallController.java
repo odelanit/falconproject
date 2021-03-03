@@ -40,7 +40,7 @@ public class ServiceCallController {
             reverseDir = sortDir.equals("asc") ? "desc" : "asc";
         }
 
-        model.addAttribute("posts", serviceCallRepository.findAll(Sort.by(direction, sortField)));
+        model.addAttribute("serviceCalls", serviceCallRepository.findAll(Sort.by(direction, sortField)));
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseDir);
         return "serviceCallSearch";
@@ -56,29 +56,28 @@ public class ServiceCallController {
     public String store(@ModelAttribute("serviceCallForm") ServiceCall serviceCall) {
         serviceCallRepository.save(serviceCall);
 
-        return "redirect:/serviceCall/search";
+        return "redirect:/serviceCall";
     }
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        ServiceCall post = serviceCallRepository.findById(id).get();
-        model.addAttribute(post);
-        return "edit";
+        ServiceCall serviceCall = serviceCallRepository.findById(id).get();
+        model.addAttribute("serviceCallForm", serviceCall);
+        return "serviceCallEdit";
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@PathVariable Long id, ServiceCall post, Model model) {
-        serviceCallRepository.save(post);
-
-        model.addAttribute(post);
+    public String update(@PathVariable Long id, @ModelAttribute("serviceCallForm") ServiceCall serviceCall, Model model) {
+        serviceCallRepository.save(serviceCall);
+        model.addAttribute(serviceCall);
         return "redirect:/";
     }
 
     @GetMapping("/show/{id}")
     public String show(@PathVariable Long id, Model model) {
-        ServiceCall post = serviceCallRepository.findById(id).get();
-        model.addAttribute(post);
-        return "show";
+        ServiceCall serviceCall = serviceCallRepository.findById(id).get();
+        model.addAttribute("serviceCall", serviceCall);
+        return "serviceCallShow";
     }
 
     @PostMapping("/delete/{id}")
@@ -92,14 +91,14 @@ public class ServiceCallController {
             fileDBRepository.deleteById(uuid);
         }
         serviceCallRepository.deleteById(id);
-        return "redirect:/";
+        return "redirect:/serviceCall";
     }
 
     @GetMapping("/edit/{id}/files")
     @ResponseBody
     public Set<FileDB> getAllFiles(@PathVariable Long id) {
-        ServiceCall post = serviceCallRepository.findById(id).get();
-        return post.getFiles();
+        ServiceCall serviceCall = serviceCallRepository.findById(id).get();
+        return serviceCall.getFiles();
     }
 
     @PostMapping("/edit/{id}/files/{fileId}")

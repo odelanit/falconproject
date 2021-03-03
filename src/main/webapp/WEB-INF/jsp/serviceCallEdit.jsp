@@ -24,8 +24,8 @@
     <link href="${contextPath}/resources/odelan/dropzone/basic.css" rel="stylesheet" type="text/css"/>
     <link href="${contextPath}/resources/odelan/css/styles.css" rel="stylesheet" type="text/css"/>
 
-    <script src="${contextPath}/resources/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="${contextPath}/resources/assets/js/bootstrap/bootstrap.min.js"></script>
+    <script src="${contextPath}/resources/odelan/jquery/jquery.min.js"></script>
+    <script src="${contextPath}/resources/odelan/js/bootstrap.min.js"></script>
     <script src="${contextPath}/resources/odelan/ckeditor/ckeditor.js"></script>
     <script src="${contextPath}/resources/odelan/dropzone/dropzone.min.js"></script>
     <meta name="_csrf" content="${_csrf.token}"/>
@@ -107,96 +107,44 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>
-                                <a href="${contextPath}/serviceCall?sf=id&sd=${reverseSortDir}">ID</a>
-                            </th>
-                            <th>
-                                <a href="${contextPath}/serviceCall?sf=integerField&sd=${reverseSortDir}">Integer
-                                    field</a>
-                            </th>
-                            <th>
-                                <a href="${contextPath}/serviceCall?sf=stringField&sd=${reverseSortDir}">String
-                                    field</a>
-                            </th>
-                            <th>
-                                <a href="${contextPath}/serviceCall?sf=dateField&sd=${reverseSortDir}">Date field</a>
-                            </th>
-                            <th>Files</th>
-                            <th>
-                                <a href="${contextPath}/serviceCall?sf=createdAt&sd=${reverseSortDir}">Created At</a>
-                            </th>
-                            <th>
-                                <a href="${contextPath}/serviceCall?sf=updatedAt&sd=${reverseSortDir}">Updated At</a>
-                            </th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${serviceCalls}" var="serviceCall">
-                            <tr>
-                                <td>${serviceCall.id}</td>
-                                <td>${serviceCall.integerField}</td>
-                                <td>${serviceCall.stringField}</td>
-                                <td>${serviceCall.dateField}</td>
-                                <td>
-                                    <c:if test="${serviceCall.files != null}">
-                                        <c:forEach items="${serviceCall.files}" var="file">
-                                            <a href="${contextPath}/files/${file.id}"
-                                               class="btn btn-link">${file.name}</a>
-                                        </c:forEach>
-                                    </c:if>
-                                </td>
-                                <td>${serviceCall.createdAt}</td>
-                                <td>${serviceCall.updatedAt}</td>
-                                <td>
-                                    <a href="${contextPath}/serviceCall/show/${serviceCall.id}">Show</a> |
-                                    <a href="${contextPath}/serviceCall/edit/${serviceCall.id}">Edit</a> |
-                                    <form:form action="${contextPath}/serviceCall/delete/${serviceCall.id}" method="post"
-                                          class="delete-form d-inline">
-                                        <a href="#" class="delete" data-toggle="modal"
-                                           data-target="#confirmDelete">Delete</a>
-                                    </form:form>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+                    <form:form id="form" modelAttribute="serviceCallForm" method="post" action="${contextPath}/serviceCall/store"
+                               onSubmit="if(!confirm('Do you really want to save the Service Call request?')){return false;}">
+                        <form:hidden path="id" />
+                        <div class="panel-header">
+                            <label>Integer field</label>
+                            <form:input type="number" path="integerField" class="form-control"
+                                        placeholder="Your answer"/>
+                        </div>
+                        <div class="panel-header">
+                            <label>String field</label>
+                            <form:input type="text" path="stringField" class="form-control" placeholder="Your answer"/>
+                        </div>
+                        <div class="panel-header">
+                            <label>Date field</label>
+                            <form:input type="date" path="dateField" class="form-control" placeholder="Your answer"/>
+                        </div>
+                        <div class="panel-header">
+                            <label>File field</label>
+                            <div class="dropzone" id="files-dropzone">
+                            </div>
+                            <form:select path="files" style="display: none" id="files"></form:select>
+                        </div>
+                        <div class="panel-header">
+                            <label>Editor field</label>
+                            <form:textarea path="editorField" id="editor"/>
+                        </div>
+                        <div class="panel-header">
+                            <button class="btn btn-primary">Save</button>
+                            <button class="btn btn-secondary" type="reset">Reset</button>
+                        </div>
+                    </form:form>
                 </div>
             </div>
 
         </div>
     </section>
 </div>
-<div class="modal fade" id="confirmDelete">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-danger">
-                <div class="modal-title">
-                    Delete
-                </div>
-                <button class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                Are you sure to delete?
-            </div>
-            <div class="modal-footer text-right">
-                <button class="btn btn-primary" id="confirm">Yes</button>
-                <button class="btn btn-secondary" data-dismiss="modal">No</button>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-    $('#confirmDelete').on('show.bs.modal', function (e) {
-        var form = $(e.relatedTarget).closest('form');
-        $(this).find('.modal-footer #confirm').data('form', form);
-    });
-    $('#confirmDelete').find('.modal-footer #confirm').on('click', function () {
-        $(this).data('form').submit();
-    });
-</script>
+
+<script src="${contextPath}/resources/js/service-call-edit.js"></script>
 </body>
 </html>
