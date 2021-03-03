@@ -155,7 +155,7 @@
                                     <a href="${contextPath}/serviceCall/show/${serviceCall.id}">Show</a> |
                                     <a href="${contextPath}/serviceCall/edit/${serviceCall.id}">Edit</a> |
                                     <form:form action="${contextPath}/serviceCall/delete/${serviceCall.id}" method="post"
-                                          class="delete-form d-inline">
+                                          class="delete-form" cssStyle="display: inline">
                                         <a href="#" class="delete" data-toggle="modal"
                                            data-target="#confirmDelete">Delete</a>
                                     </form:form>
