@@ -149,8 +149,8 @@
                                         </c:forEach>
                                     </c:if>
                                 </td>
-                                <td>${serviceCall.createdAt}</td>
-                                <td>${serviceCall.updatedAt}</td>
+                                <td>${serviceCall.createdAt.format(localDateTimeFormat)}</td>
+                                <td>${serviceCall.updatedAt.format(localDateTimeFormat)}</td>
                                 <td>
                                     <a href="${contextPath}/serviceCall/show/${serviceCall.id}">Show</a> |
                                     <a href="${contextPath}/serviceCall/edit/${serviceCall.id}">Edit</a> |

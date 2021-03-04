@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @ControllerAdvice(annotations = Controller.class)
@@ -23,5 +24,10 @@ public class AnnotationAdvice {
             User user = userDetails.getUser();
         }
         return menuRepository.findByMenuEnabled("true");
+    }
+
+    @ModelAttribute("localDateTimeFormat")
+    DateTimeFormatter localDateTimeFormat() {
+        return DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
     }
 }

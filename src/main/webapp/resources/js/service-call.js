@@ -105,6 +105,108 @@ ClassicEditor.create(document.querySelector("#editor"), {
         console.error(error.stack)
     })
 
+ClassicEditor.create(document.querySelector("#editor2"), {
+    ckfinder: {
+        uploadUrl: `/editor-upload?_csrf=${_token}`,
+    },
+    toolbar: {
+        items: [
+            'heading',
+            '|',
+            'bold',
+            'italic',
+            'link',
+            'bulletedList',
+            'numberedList',
+            '|',
+            'alignment',
+            'indent',
+            'outdent',
+            '|',
+            'imageUpload',
+            'blockQuote',
+            'codeBlock',
+            'insertTable',
+            'mediaEmbed',
+            'undo',
+            'redo'
+        ]
+    },
+    language: 'en',
+    image: {
+        toolbar: [
+            'imageTextAlternative',
+            'imageStyle:full',
+            'imageStyle:side'
+        ]
+    },
+    table: {
+        contentToolbar: [
+            'tableColumn',
+            'tableRow',
+            'mergeTableCells'
+        ]
+    },
+})
+    .then(editor2 => {
+        window.editor2 = editor2
+        var model2 = editor2.model
+        model2.document.on('change:data', (event) => {
+            const differ = event.source.differ
+            if (differ.isEmpty) {
+                return;
+            }
+            const changes = differ.getChanges({
+                includeChangesInGraveyard: true
+            })
+
+            if (changes.length == 0) {
+                return;
+            }
+
+            let hasNoImageRemoved = true;
+
+            // check any image remove or not
+            for (let i = 0; i < changes.length; i++) {
+                const change = changes[i]
+                // if image remove exists
+                if (change && change.type === 'remove' && change.name === 'image') {
+                    hasNoImageRemoved = false
+                    break
+                }
+            }
+
+            // if not image remove stop execution
+            if (hasNoImageRemoved) {
+                return;
+            }
+
+            // get removed nodes
+            const removedNodes = changes.filter(change => (change.type === 'insert' && change.name === 'image'))
+
+            // removed images src
+            const removedImagesSrc = [];
+            // removed image nodes
+            const removedImageNodes = []
+
+            removedNodes.forEach(node => {
+                const removedNode = node.position.nodeAfter
+                removedImageNodes.push(removedNode)
+                removedImagesSrc.push(removedNode.getAttribute('src'))
+            })
+
+            removedImagesSrc.forEach(imageUrl => {
+                $.ajax({
+                    type: 'POST',
+                    url: `${imageUrl}?_csrf=${_token}`,
+                });
+            })
+        })
+    })
+    .catch(error => {
+        console.error(error.stack)
+    })
+
 let portfolioDropzone = new Dropzone('#files-dropzone', {
     url: `/upload?_csrf=${_token}`,
     addRemoveLinks: true,

@@ -133,6 +133,10 @@
                             <form:textarea path="editorField" id="editor"/>
                         </div>
                         <div class="panel-header">
+                            <label>Second Editor</label>
+                            <form:textarea path="secondEditor" id="editor2"/>
+                        </div>
+                        <div class="panel-header">
                             <button class="btn btn-primary">Save</button>
                             <button class="btn btn-secondary" type="reset">Reset</button>
                         </div>
