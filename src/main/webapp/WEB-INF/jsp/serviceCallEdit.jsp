@@ -28,6 +28,7 @@
     <script src="${contextPath}/resources/odelan/js/bootstrap.min.js"></script>
     <script src="${contextPath}/resources/odelan/ckeditor/ckeditor.js"></script>
     <script src="${contextPath}/resources/odelan/dropzone/dropzone.min.js"></script>
+    <script src="${contextPath}/resources/js/vue.min.js"></script>
     <meta name="_csrf" content="${_csrf.token}"/>
 
 </head>
@@ -110,34 +111,79 @@
                     <form:form id="form" modelAttribute="serviceCallForm" method="post" action="${contextPath}/serviceCall/store"
                                onSubmit="if(!confirm('Do you really want to save the Service Call request?')){return false;}">
                         <form:hidden path="id" />
-                        <div class="panel-header">
+                        <div class="form-group">
                             <label>Integer field</label>
                             <form:input type="number" path="integerField" class="form-control"
                                         placeholder="Your answer"/>
                         </div>
-                        <div class="panel-header">
+                        <div class="form-group">
                             <label>String field</label>
                             <form:input type="text" path="stringField" class="form-control" placeholder="Your answer"/>
                         </div>
-                        <div class="panel-header">
+                        <div class="form-group">
                             <label>Date field</label>
                             <form:input type="date" path="dateField" class="form-control" placeholder="Your answer"/>
                         </div>
-                        <div class="panel-header">
+                        <div class="form-group">
                             <label>File field</label>
                             <div class="dropzone" id="files-dropzone">
                             </div>
                             <form:select path="files" style="display: none" id="files"></form:select>
                         </div>
-                        <div class="panel-header">
+                        <div class="form-group">
                             <label>Editor field</label>
                             <form:textarea path="editorField" id="editor"/>
                         </div>
-                        <div class="panel-header">
+                        <div class="form-group">
                             <label>Second Editor</label>
                             <form:textarea path="secondEditor" id="editor2"/>
                         </div>
-                        <div class="panel-header">
+                        <div class="form-group" id="item-table">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th style="width: 25px;"></th>
+                                    <th style="width: 100px;">Part#</th>
+                                    <th>Description</th>
+                                    <th style="width: 100px;">Label</th>
+                                    <th style="width: 100px;">Qty Ordered</th>
+                                    <th style="width: 100px;">Qty Delivered</th>
+                                    <th style="width: 100px;">Order Fillled By</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in items">
+                                    <td>
+                                        <input type="checkbox" v-model="item.is_checked">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" v-model="item.part">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" v-model="item.description">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" v-model="item.label">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" v-model="item.qty_ordered">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" v-model="item.qty_delivered">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" v-model="item.qty_filled_by">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <button type="button" @click="addNewLine" class="btn btn-info">Add line</button>
+                                <button type="button" @click="deleteLine" class="btn btn-primary">Delete line</button>
+                                <button type="button" @click="clearItems" class="btn btn-primary">Clear</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <button class="btn btn-primary">Save</button>
                             <button class="btn btn-secondary" type="reset">Reset</button>
                         </div>
@@ -150,5 +196,35 @@
 </div>
 
 <script src="${contextPath}/resources/js/service-call-edit.js"></script>
+<script>
+    new Vue({
+        el: '#item-table',
+        data: {
+            items: []
+        },
+        methods: {
+            addNewLine() {
+                this.items.push({
+                    is_checked: false,
+                    part: '',
+                    description: '',
+                    label: '',
+                    qty_ordered: 0,
+                    qty_delivered: 0,
+                    qty_filled_by: 0
+                })
+            },
+            deleteLine() {
+                this.items = this.items.filter(item => item.is_checked != true)
+            },
+            clearItems() {
+                this.items = []
+            },
+            toggleChecked(item) {
+                this.$set(item, 'is_checked', !item.is_checked);
+            }
+        }
+    })
+</script>
 </body>
 </html>
