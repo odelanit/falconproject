@@ -126,6 +126,9 @@
                             </th>
                             <th>Files</th>
                             <th>
+                                <a href="${contextPath}/serviceCall?sf=username&sd=${reverseSortDir}">Username</a>
+                            </th>
+                            <th>
                                 <a href="${contextPath}/serviceCall?sf=createdAt&sd=${reverseSortDir}">Created At</a>
                             </th>
                             <th>
@@ -149,6 +152,7 @@
                                         </c:forEach>
                                     </c:if>
                                 </td>
+                                <td>${serviceCall.username}</td>
                                 <td>${serviceCall.createdAt.format(localDateTimeFormat)}</td>
                                 <td>${serviceCall.updatedAt.format(localDateTimeFormat)}</td>
                                 <td>

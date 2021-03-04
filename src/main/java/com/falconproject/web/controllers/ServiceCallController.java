@@ -4,8 +4,10 @@ import com.falconproject.web.models.FileDB;
 import com.falconproject.web.models.ServiceCall;
 import com.falconproject.web.repository.FileDBRepository;
 import com.falconproject.web.repository.ServiceCallRepository;
+import com.falconproject.web.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +55,8 @@ public class ServiceCallController {
     }
 
     @PostMapping("/store")
-    public String store(@ModelAttribute("serviceCallForm") ServiceCall serviceCall) {
+    public String store(@ModelAttribute("serviceCallForm") ServiceCall serviceCall, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        serviceCall.setUsername(userDetails.getUsername());
         serviceCallRepository.save(serviceCall);
 
         return "redirect:/serviceCall";
@@ -67,7 +70,8 @@ public class ServiceCallController {
     }
 
     @PostMapping("/edit/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute("serviceCallForm") ServiceCall serviceCall, Model model) {
+    public String update(@PathVariable Long id, @ModelAttribute("serviceCallForm") ServiceCall serviceCall, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
+        serviceCall.setUsername(userDetails.getUsername());
         serviceCallRepository.save(serviceCall);
         model.addAttribute(serviceCall);
         return "redirect:/";
