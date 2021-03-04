@@ -2,6 +2,9 @@ package com.falconproject.web.models;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -33,14 +36,18 @@ public class ServiceCall {
     @Column(columnDefinition = "TEXT")
     private String secondEditor;
 
-    private String username;
-
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "serviceCall")
+    private Set<Line> lines;
+
+    @Transient
+    private String linesJson;
 
     public Long getId() {
         return id;
@@ -111,19 +118,27 @@ public class ServiceCall {
         fileDB.getPosts().remove(this);
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getSecondEditor() {
         return secondEditor;
     }
 
     public void setSecondEditor(String secondEditor) {
         this.secondEditor = secondEditor;
+    }
+
+    public Set<Line> getLines() {
+        return lines;
+    }
+
+    public void setLines(Set<Line> lines) {
+        this.lines = lines;
+    }
+
+    public String getLinesJson() {
+        return linesJson;
+    }
+
+    public void setLinesJson(String linesJson) {
+        this.linesJson = linesJson;
     }
 }

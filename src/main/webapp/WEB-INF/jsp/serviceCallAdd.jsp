@@ -138,6 +138,7 @@
                             <form:textarea path="secondEditor" id="editor2"/>
                         </div>
                         <div class="form-group" id="item-table">
+                            <form:hidden path="linesJson" />
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -156,7 +157,7 @@
                                         <input type="checkbox" v-model="item.is_checked">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" v-model="item.part">
+                                        <input type="text" required class="form-control" v-model="item.part">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" v-model="item.description">
@@ -171,7 +172,7 @@
                                         <input type="number" class="form-control" v-model="item.qty_delivered">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" v-model="item.qty_filled_by">
+                                        <input type="text" class="form-control" v-model="item.order_filled_by">
                                     </td>
                                 </tr>
                                 </tbody>
@@ -210,7 +211,7 @@
                     label: '',
                     qty_ordered: 0,
                     qty_delivered: 0,
-                    qty_filled_by: 0
+                    order_filled_by: '',
                 })
             },
             deleteLine() {
@@ -221,6 +222,14 @@
             },
             toggleChecked(item) {
                 this.$set(item, 'is_checked', !item.is_checked);
+            }
+        },
+        watch: {
+            items: {
+                deep: true,
+                handler() {
+                    $("#linesJson").val(JSON.stringify(this.items))
+                }
             }
         }
     })

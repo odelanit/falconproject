@@ -22,6 +22,9 @@ public class Menu {
     @ManyToMany(mappedBy = "menuSet")
     Set<UserGroup> groups;
 
+    @OneToMany
+    Set<Line> lines;
+
     public Integer getMenuId() {
         return menuId;
     }

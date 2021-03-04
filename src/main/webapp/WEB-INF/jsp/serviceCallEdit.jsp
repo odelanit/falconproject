@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <form:form id="form" modelAttribute="serviceCallForm" method="post" action="${contextPath}/serviceCall/store"
+                    <form:form id="form" modelAttribute="serviceCallForm" method="post" action="${contextPath}/serviceCall/edit/${serviceCallForm.id}"
                                onSubmit="if(!confirm('Do you really want to save the Service Call request?')){return false;}">
                         <form:hidden path="id" />
                         <div class="form-group">
@@ -139,6 +139,7 @@
                             <form:textarea path="secondEditor" id="editor2"/>
                         </div>
                         <div class="form-group" id="item-table">
+                            <form:hidden path="linesJson" />
                             <table class="table">
                                 <thead>
                                 <tr>
@@ -172,7 +173,7 @@
                                         <input type="number" class="form-control" v-model="item.qty_delivered">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" v-model="item.qty_filled_by">
+                                        <input type="number" class="form-control" v-model="item.order_filled_by">
                                     </td>
                                 </tr>
                                 </tbody>
@@ -202,6 +203,11 @@
         data: {
             items: []
         },
+        mounted() {
+            if ($('#linesJson').val()) {
+                this.items = JSON.parse($('#linesJson').val());
+            }
+        },
         methods: {
             addNewLine() {
                 this.items.push({
@@ -211,7 +217,7 @@
                     label: '',
                     qty_ordered: 0,
                     qty_delivered: 0,
-                    qty_filled_by: 0
+                    order_filled_by: 0
                 })
             },
             deleteLine() {
@@ -222,6 +228,14 @@
             },
             toggleChecked(item) {
                 this.$set(item, 'is_checked', !item.is_checked);
+            }
+        },
+        watch: {
+            items: {
+                deep: true,
+                handler() {
+                    $("#linesJson").val(JSON.stringify(this.items))
+                }
             }
         }
     })
