@@ -21,7 +21,7 @@
                 </a>
             </c:if>
             <c:if test="${item.menuName != 'Logout'}">
-                <a href="${item.menuUrl}">
+                <a href="/${item.menuUrl}">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">${item.menuName}</span>
                 </a>

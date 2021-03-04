@@ -107,32 +107,37 @@
                     </div>
                 </div>
                 <div class="panel-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input type="text" class="form-control" value="${keyword}" name="k" placeholder="keyword">
+                        </div>
+                    </form>
                     <table class="table">
                         <thead>
                         <tr>
                             <th>
-                                <a href="${contextPath}/serviceCall?sf=id&sd=${reverseSortDir}">ID</a>
+                                <a href="${contextPath}/serviceCall?sf=id&sd=${reverseSortDir}&k=${keyword}">ID</a>
                             </th>
                             <th>
-                                <a href="${contextPath}/serviceCall?sf=integerField&sd=${reverseSortDir}">Integer
+                                <a href="${contextPath}/serviceCall?sf=integerField&sd=${reverseSortDir}&k=${keyword}">Integer
                                     field</a>
                             </th>
                             <th>
-                                <a href="${contextPath}/serviceCall?sf=stringField&sd=${reverseSortDir}">String
+                                <a href="${contextPath}/serviceCall?sf=stringField&sd=${reverseSortDir}&k=${keyword}">String
                                     field</a>
                             </th>
                             <th>
-                                <a href="${contextPath}/serviceCall?sf=dateField&sd=${reverseSortDir}">Date field</a>
+                                <a href="${contextPath}/serviceCall?sf=dateField&sd=${reverseSortDir}&k=${keyword}">Date field</a>
                             </th>
                             <th>Files</th>
                             <th>
-                                <a href="${contextPath}/serviceCall?sf=username&sd=${reverseSortDir}">Username</a>
+                                <a href="${contextPath}/serviceCall?sf=username&sd=${reverseSortDir}&k=${keyword}">Username</a>
                             </th>
                             <th>
-                                <a href="${contextPath}/serviceCall?sf=createdAt&sd=${reverseSortDir}">Created At</a>
+                                <a href="${contextPath}/serviceCall?sf=createdAt&sd=${reverseSortDir}&k=${keyword}">Created At</a>
                             </th>
                             <th>
-                                <a href="${contextPath}/serviceCall?sf=updatedAt&sd=${reverseSortDir}">Updated At</a>
+                                <a href="${contextPath}/serviceCall?sf=updatedAt&sd=${reverseSortDir}&k=${keyword}">Updated At</a>
                             </th>
                             <th></th>
                         </tr>

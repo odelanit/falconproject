@@ -85,7 +85,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
         createMenu("User Deletion", "userDeletion", "gen");
         createMenu("Group Deletion", "groupDeletion", "gen");
         createMenu("Edit Group", "editGroup", "gen");
-        createMenu("Service Call", "/serviceCall", "true");
+        createMenu("Service Call", "serviceCall", "true");
 
         createTimePeriod(0);
         createTimePeriod(30);

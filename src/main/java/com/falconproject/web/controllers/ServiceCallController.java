@@ -5,8 +5,11 @@ import com.falconproject.web.models.ServiceCall;
 import com.falconproject.web.repository.FileDBRepository;
 import com.falconproject.web.repository.ServiceCallRepository;
 import com.falconproject.web.service.UserDetailsImpl;
+import com.falconproject.web.specification.SearchCriteria;
+import com.falconproject.web.specification.ServiceCallSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +32,7 @@ public class ServiceCallController {
     protected FileDBRepository fileDBRepository;
 
     @GetMapping("")
-    public String index(@RequestParam(value = "sf", required = false) String sortField, @RequestParam(value = "sd", required = false) String sortDir, Model model) {
+    public String index(@RequestParam(value = "sf", required = false) String sortField, @RequestParam(value = "sd", required = false) String sortDir, @RequestParam(value = "k", required = false) String keyword, Model model) {
         if (sortField == null) sortField = "id";
 
         Sort.Direction direction;
@@ -42,9 +45,16 @@ public class ServiceCallController {
             reverseDir = sortDir.equals("asc") ? "desc" : "asc";
         }
 
-        model.addAttribute("serviceCalls", serviceCallRepository.findAll(Sort.by(direction, sortField)));
+        if (keyword != null) {
+            Specification<ServiceCall> spec = new ServiceCallSpecification(new SearchCriteria("editorField", ":", keyword));
+            spec = Specification.where(spec).or(new ServiceCallSpecification(new SearchCriteria("secondEditor", ":", keyword)));
+            model.addAttribute("serviceCalls", serviceCallRepository.findAll(spec, Sort.by(direction, sortField)));
+        } else {
+            model.addAttribute("serviceCalls", serviceCallRepository.findAll(Sort.by(direction, sortField)));
+        }
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", reverseDir);
+        model.addAttribute("keyword", keyword);
         return "serviceCallSearch";
     }
 
