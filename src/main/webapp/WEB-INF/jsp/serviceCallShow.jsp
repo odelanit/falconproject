@@ -116,6 +116,35 @@
                         </c:forEach>
                     </c:if>
                     <div class="mb-4">${serviceCall.editorField}</div>
+                    <div class="mb-4">${serviceCall.secondEditor}</div>
+                    <c:if test="${serviceCall.lines.size() > 0}">
+                        <div class="">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Part</th>
+                                    <th>Description</th>
+                                    <th>Label</th>
+                                    <th>Qty Ordered</th>
+                                    <th>Qty Delivered</th>
+                                    <th>Order Filled By</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="line" items="${serviceCall.lines}">
+                                    <tr>
+                                        <td>${line.part}</td>
+                                        <td>${line.description}</td>
+                                        <td>${line.label}</td>
+                                        <td>${line.qtyOrdered}</td>
+                                        <td>${line.qtyDelivered}</td>
+                                        <td>${line.orderFilledBy}</td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 
