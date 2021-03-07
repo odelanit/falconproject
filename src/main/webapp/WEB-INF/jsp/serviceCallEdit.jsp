@@ -173,7 +173,7 @@
                                         <input type="number" class="form-control" v-model="item.qty_delivered">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" v-model="item.order_filled_by">
+                                        <input type="text" class="form-control" v-model="item.order_filled_by">
                                     </td>
                                 </tr>
                                 </tbody>
@@ -217,7 +217,7 @@
                     label: '',
                     qty_ordered: 0,
                     qty_delivered: 0,
-                    order_filled_by: 0
+                    order_filled_by: ''
                 })
             },
             deleteLine() {
