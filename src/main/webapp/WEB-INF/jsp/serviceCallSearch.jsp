@@ -97,10 +97,8 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="heading col-lg-12">
-                                <input type="button" class="btn btn-primary" id="serviceCallSearch"
-                                       value="Search Service Call" onclick="location.href='/serviceCall'">
-                                <input type="button" class="btn btn-primary" id="serviceCallNewAdd"
-                                       value="New Service Call" onclick="location.href='/serviceCall/add'">
+                                <a class="btn btn-primary" href="${contextPath}/serviceCall">Search Service Call</a>
+                                <a class="btn btn-primary" href="${contextPath}/serviceCall/add">New Service Call</a>
                                 <input type="button" class="btn btn-primary" id="serviceCallPrint" value="Print">
                             </div>
                         </div>

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
 <script type="text/javascript">
 
@@ -21,7 +22,7 @@
                 </a>
             </c:if>
             <c:if test="${item.menuName != 'Logout'}">
-                <a href="/${item.menuUrl}">
+                <a href="${contextPath}/${item.menuUrl}">
                     <span class="fa fa-users"></span>
                     <span class="sidebar-title">${item.menuName}</span>
                 </a>
