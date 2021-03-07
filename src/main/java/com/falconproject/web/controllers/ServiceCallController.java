@@ -9,10 +9,10 @@ import com.falconproject.web.repository.ServiceCallRepository;
 import com.falconproject.web.service.UserDetailsImpl;
 import com.falconproject.web.specification.SearchCriteria;
 import com.falconproject.web.specification.ServiceCallSpecification;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,7 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@RequestMapping(value = "/serviceCall")
+//@RequestMapping("/serviceCall")
 public class ServiceCallController {
     @Autowired
     protected ServiceCallRepository serviceCallRepository;
@@ -38,7 +38,7 @@ public class ServiceCallController {
     @Autowired
     protected FileDBRepository fileDBRepository;
 
-    @GetMapping("")
+    @GetMapping("/serviceCall")
     public String index(@RequestParam(value = "sf", required = false) String sortField, @RequestParam(value = "sd", required = false) String sortDir, @RequestParam(value = "k", required = false) String keyword, Model model) {
         if (sortField == null) sortField = "id";
 
@@ -65,13 +65,13 @@ public class ServiceCallController {
         return "serviceCallSearch";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/serviceCall/add")
     public String create(Model model) {
         model.addAttribute("serviceCallForm", new ServiceCall());
         return "serviceCallAdd";
     }
 
-    @PostMapping("/store")
+    @PostMapping("/serviceCall/store")
     public String store(@ModelAttribute("serviceCallForm") ServiceCall serviceCall, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         LocalDateTime dateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
@@ -108,7 +108,7 @@ public class ServiceCallController {
         return "redirect:/serviceCall";
     }
 
-    @GetMapping("/edit/{id}")
+    @GetMapping("/serviceCall/edit/{id}")
     public String edit(@PathVariable Long id, Model model) throws JSONException {
         ServiceCall serviceCall = serviceCallRepository.findById(id).get();
         Set<Line> lines = serviceCall.getLines();
@@ -131,7 +131,7 @@ public class ServiceCallController {
         return "serviceCallEdit";
     }
 
-    @PostMapping("/edit/{id}")
+    @PostMapping("/serviceCall/edit/{id}")
     public String update(@PathVariable Long id, @ModelAttribute("serviceCallForm") ServiceCall serviceCallForm, @AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
         ServiceCall serviceCall = serviceCallRepository.findById(id).get();
 
@@ -176,14 +176,14 @@ public class ServiceCallController {
         return "redirect:/serviceCall";
     }
 
-    @GetMapping("/show/{id}")
+    @GetMapping("/serviceCall/show/{id}")
     public String show(@PathVariable Long id, Model model) {
         ServiceCall serviceCall = serviceCallRepository.findById(id).get();
         model.addAttribute("serviceCall", serviceCall);
         return "serviceCallShow";
     }
 
-    @PostMapping("/delete/{id}")
+    @PostMapping("/serviceCall/delete/{id}")
     public String delete(@PathVariable Long id) {
         ServiceCall post = serviceCallRepository.findById(id).get();
         String editorField = post.getEditorField();
@@ -197,14 +197,14 @@ public class ServiceCallController {
         return "redirect:/serviceCall";
     }
 
-    @GetMapping("/edit/{id}/files")
+    @GetMapping("/serviceCall/edit/{id}/files")
     @ResponseBody
     public Set<FileDB> getAllFiles(@PathVariable Long id) {
         ServiceCall serviceCall = serviceCallRepository.findById(id).get();
         return serviceCall.getFiles();
     }
 
-    @PostMapping("/edit/{id}/files/{fileId}")
+    @PostMapping("/serviceCall/edit/{id}/files/{fileId}")
     @ResponseBody
     public HashMap<String, String> getAllFiles(@PathVariable Long id, @PathVariable String fileId) {
         ServiceCall post = serviceCallRepository.findById(id).get();
