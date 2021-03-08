@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,12 +21,12 @@ public class FileUploadController {
 
     @PostMapping("/editor-upload")
     @ResponseBody
-    public Map<String, Object> handleEditorFileUpload(@RequestParam("upload") MultipartFile file) throws IOException {
+    public Map<String, Object> handleEditorFileUpload(@RequestParam("upload") MultipartFile file, HttpServletRequest request) throws IOException {
         HashMap<String, Object> map = new HashMap<>();
 
         FileDB fileDB = storageService.store(file);
 
-        map.put("url", "/files/" + fileDB.getId());
+        map.put("url", request.getContextPath() + "/files/" + fileDB.getId());
         map.put("uploaded", true);
         return map;
     }

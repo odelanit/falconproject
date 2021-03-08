@@ -30,6 +30,7 @@
     <script src="${contextPath}/resources/odelan/dropzone/dropzone.min.js"></script>
     <script src="${contextPath}/resources/js/vue.min.js"></script>
     <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="context_path" content="${contextPath}" />
 
 </head>
 
@@ -98,10 +99,8 @@
                     <div class="box-header with-border">
                         <div class="row">
                             <div class="heading col-lg-12">
-                                <input type="button" class="btn btn-primary" id="serviceCallSearch"
-                                       value="Search Service Call" onclick="location.href='/serviceCall'">
-                                <input type="button" class="btn btn-primary" id="serviceCallNewAdd"
-                                       value="New Service Call" onclick="location.href='/serviceCall/add'">
+                                <a class="btn btn-primary" href="${contextPath}/serviceCall">Search Service Call</a>
+                                <a class="btn btn-primary" href="${contextPath}/serviceCall/add">New Service Call</a>
                                 <input type="button" class="btn btn-primary" id="serviceCallPrint" value="Print">
                             </div>
                         </div>

@@ -1,10 +1,12 @@
 var _token = $('meta[name="_csrf"]').attr('content');
+var contextPath = $('meta[name="context_path"]').attr('content')
 var files = [];
 
 Dropzone.autoDiscover = false;
+
 ClassicEditor.create(document.querySelector("#editor"), {
     ckfinder: {
-        uploadUrl: `/editor-upload?_csrf=${_token}`,
+        uploadUrl: `${contextPath}/editor-upload?_csrf=${_token}`,
     },
     toolbar: {
         items: [
@@ -106,7 +108,7 @@ ClassicEditor.create(document.querySelector("#editor"), {
 
 ClassicEditor.create(document.querySelector("#editor2"), {
     ckfinder: {
-        uploadUrl: `/editor-upload?_csrf=${_token}`,
+        uploadUrl: `${contextPath}/editor-upload?_csrf=${_token}`,
     },
     toolbar: {
         items: [
@@ -207,7 +209,7 @@ ClassicEditor.create(document.querySelector("#editor2"), {
     })
 
 let portfolioDropzone = new Dropzone('#files-dropzone', {
-    url: `/upload?_csrf=${_token}`,
+    url: `${contextPath}/upload?_csrf=${_token}`,
     addRemoveLinks: true,
     timeout: 300000,
     maxFilesize: 1024,
